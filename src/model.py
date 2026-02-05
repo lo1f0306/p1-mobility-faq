@@ -50,10 +50,15 @@ class ParkingLot:
         return f'ParkingLot:{self.__id}, {self.__reg_id}, {self.__name}, {self.__lat}, {self.__lng}, {self.__sido}, {self.__sigungu}, {self.__full_addr}'
 
 class Destination:
-    def __init__(self, address: str, lat: float, lng: float):
+    def __init__(self, name: str, address: str, lat: float, lng: float):
+        self.__name = name
         self.__address = address
         self.__lat = lat
         self.__lng = lng
+
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def address(self):
@@ -66,4 +71,8 @@ class Destination:
         return self.__lng
 
     def __repr__(self):
-        return f'Destination(address = "{self.__address}", lat = {self.__lat}, lng = {self.__lng})'
+        return f'Destination(name = "{self.__name}", address = "{self.__address}", lat = {self.__lat}, lng = {self.__lng})'
+
+class GasStation:
+    def __init__(self, brand_name: str, station_name:str, lat: float, lng: float):
+        pass

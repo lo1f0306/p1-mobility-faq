@@ -51,7 +51,7 @@ def get_oil_stations(lat, lon, radius=3000):
         "y": ky,
         "radius": radius,
         "prodcd": "B027",  # 휘발유 기준
-        "sort": 1  # 거리순
+        "sort": 2  # 거리순
     }
     try:
         res = requests.get(url, params=params)

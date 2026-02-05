@@ -9,8 +9,11 @@ def find_address_and_point(destination_name):
     try:
         result_data = geolocator.geocode(destination_name, exactly_one=True)
         if result_data:
-            return Destination(result_data.address, result_data.latitude, result_data.longitude)
+            return Destination(destination_name, result_data.address, result_data.latitude, result_data.longitude)
         else:
             return None
     except Exception as e:
         raise e
+
+def get_mbr_polygon(min_lng, min_lat, max_lng, max_lat):
+    return f"POLYGON(({min_lng} {min_lat}, {max_lng} {min_lat}, {max_lng} {max_lat}, {min_lng} {max_lat}, {min_lng} {min_lat}))"
