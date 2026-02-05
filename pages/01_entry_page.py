@@ -67,8 +67,7 @@ def render_entry():
             </div>
         """, unsafe_allow_html=True)
         if st.button("주유소 찾아보기", key="btn_gas", use_container_width=True):
-            pass
-        #  st.switch_page("pages/anotherpage.py")
+            st.switch_page("pages/04_search_gas_station.py")
 
     # 4. 하단 통계 요약 (AI 백엔드 느낌 강조)
 
