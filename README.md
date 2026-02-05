@@ -7,44 +7,44 @@
 
 <table align="center">
   <tr valign="top">
-    <td align="center" width="150px">
-      <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-        <img src="./images/Leonardo.png" width="100" height="100" style="object-fit: contain;">
+    <td align="center" width="140px">
+      <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/Leonardo.png" width="85" height="85" style="object-fit: contain;">
       </div>
       <br><b>이창우</b><br>역할 | PM<br>
       <a href="https://github.com/Gloveman"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
     </td>
-    <td align="center" width="150px">
-      <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-        <img src="./images/Isabelle.png" width="100" height="100" style="object-fit: contain;">
+    <td align="center" width="140px">
+      <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/Isabelle.png" width="85" height="85" style="object-fit: contain;">
       </div>
       <br><b>김지윤</b><br>역할 | FRONT<br>
       <a href="https://github.com/JiyounKim-EllyKim"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
     </td>
-    <td align="center" width="150px">
-      <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-        <img src="./images/Katie.png" width="100" height="100" style="object-fit: contain;">
+    <td align="center" width="140px">
+      <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/Katie.png" width="85" height="85" style="object-fit: contain;">
       </div>
       <br><b>박기은</b><br>역할 | FRONT<br>
       <a href="https://github.com/gieun-Park"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
     </td>
-    <td align="center" width="150px">
-      <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-        <img src="./images/Bluebear.png" width="100" height="100" style="object-fit: contain;">
+    <td align="center" width="140px">
+      <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/Bluebear.png" width="85" height="85" style="object-fit: contain;">
       </div>
       <br><b>박은지</b><br>역할 | DB/BACK<br>
       <a href="https://github.com/lo1f0306"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
     </td>
-    <td align="center" width="150px">
-      <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-        <img src="./images/Dotty.png" width="100" height="100" style="object-fit: contain;">
+    <td align="center" width="140px">
+      <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/Dotty.png" width="85" height="85" style="object-fit: contain;">
       </div>
       <br><b>윤정연</b><br>역할 | FRONT<br>
       <a href="https://github.com/dimolto3"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
     </td>
-    <td align="center" width="150px">
-      <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-        <img src="./images/Tom Nook.png" width="100" height="100" style="object-fit: contain;">
+    <td align="center" width="140px">
+      <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+        <img src="./images/Tom Nook.png" width="85" height="85" style="object-fit: contain;">
       </div>
       <br><b>홍지윤</b><br>역할 | DB/BACK<br>
       <a href="https://github.com/jyh-skn"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
