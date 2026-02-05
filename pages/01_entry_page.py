@@ -51,7 +51,7 @@ def render_entry():
             <div class="service-card">
                 <div class="icon-text">🅿️</div>
                 <div class="title-text">주차장 서비스</div>
-                <div class="desc-text">전국 176만 건의 주차장 위치와<br>실시간 여유 공간을 확인하세요.</div>
+                <div class="desc-text">전국 주차장 위치와<br>총 주차 가능한 공간을 확인하세요.</div>
             </div>
         """, unsafe_allow_html=True)
         # 실제 이동을 위한 투명한 버튼 혹은 아래 버튼 배치
