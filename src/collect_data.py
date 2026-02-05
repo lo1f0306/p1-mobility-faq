@@ -3,21 +3,15 @@ import requests
 import mysql.connector
 from dotenv import load_dotenv
 import os
+import json
 
 from model import ParkingLot
 
 load_dotenv()
 
-# mysql-connection 정보
-config = {
-    'host': 'localhost',
-    'port': 3306,
-    'user': 'skn26',
-    'password': 'skn26',
-    'database':'menudb'
-}
-
 API_KEY = os.getenv("API_KEY")
+DB_CONFIG = json.loads(os.getenv("DB_CONFIG"))
+
 BASE_URL = 'https://apis.data.go.kr/B553881/Parking/PrkSttusInfo'
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
@@ -45,12 +39,12 @@ print(parking_lots_list)
 
 if len(parking_lots_list) > 0:
     try:
-        with mysql.connector.connect(**config) as conn:
+        with mysql.connector.connect(**DB_CONFIG) as conn:
             with conn.cursor() as cursor:
                 for parking_lot in parking_lots_list:
                     cursor.execute("""
                         insert
-                          into parkinglot (id
+                          into parking_lot (id
                                           , reg_id
                                           , name
                                           , lat
@@ -74,6 +68,7 @@ if len(parking_lots_list) > 0:
                                )
                     """, (None ,parking_lot.reg_id, parking_lot.name, parking_lot.lat, parking_lot.lng, parking_lot.sido, parking_lot.sigungu, parking_lot.full_addr, parking_lot.space_no, parking_lot.lng, parking_lot.lat))
                 conn.commit()
+
     except mysql.connector.Error as err:
         print('DB에러: ', err)
 

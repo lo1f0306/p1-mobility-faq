@@ -48,3 +48,59 @@ def get_near_parking_data(dest: Destination):
 
 def get_parkinglots_by_region():
     return
+
+def run_query(query, params=None, is_select=True):
+    """
+    query를 실행하는 함수.
+    """
+    conn = get_connection()
+    if not conn:
+        return None
+
+    # 연결이 끊겼는지 확인하고 필요시 재연결
+    if not conn.is_connected():
+        conn.reconnect()
+
+    cursor = conn.cursor(dictionary=True)  # 결과를 딕셔너리 형태(k-v)로 반환
+    try:
+        cursor.execute(query, params or ())
+
+        if is_select:
+            result = cursor.fetchall()
+            return result
+        else:
+            conn.commit()  # INSERT, UPDATE, DELETE는 commit 필수
+            return cursor.rowcount  # 영향을 받은 행의 수 반환
+
+    except mysql.connector.Error as err:
+        st.error(f"SQL 에러: {err}")
+        return None
+    finally:
+        cursor.close()
+
+def run_bulk_insert_query(query, params=None):
+    """
+    대량의 insert query를 실행하는 함수.
+    """
+    conn = get_connection()
+    if not conn:
+        return None
+
+    # 연결이 끊겼는지 확인하고 필요시 재연결
+    if not conn.is_connected():
+        conn.reconnect()
+
+    cursor = conn.cursor(dictionary=True)  # 결과를 딕셔너리 형태(k-v)로 반환
+    try:
+        # 대량 데이터 execute
+        cursor.executemany(query, params or ())
+        conn.commit()
+        return cursor.rowcount  # 영향을 받은 행의 수 반환
+
+    except mysql.connector.Error as err:
+        print(f"SQL 에러: {err}")
+        return None
+    except Exception as err:
+        print(f"에러: {err}")
+    finally:
+        cursor.close()
