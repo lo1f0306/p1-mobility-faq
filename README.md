@@ -2,41 +2,41 @@
 
 ---
 
-<h2 align="center">👋🏻 팀 소개</h2>
-<h3 align="center">📌 **Team 차곡차곡**</h3>
+<h2>👋🏻 팀 소개</h2>
+<h3>📌 **Team 차곡차곡**</h3>
 
 <table align="center">
   <tr>
-    <td align="center" width="150px">
-      <img src="./images/Leonardo.png" width="100">
-      <br><b>이창우</b><br>역할 | PM<br>
-      <a href="https://github.com/Gloveman"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
-    </td>
-    <td align="center" width="150px">
-      <img src="./images/Bluebear.png" width="100">
-      <br><b>김지윤</b><br>역할 | FRONT<br>
-      <a href="https://github.com/JiyounKim-EllyKim"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
-    </td>
-    <td align="center" width="150px">
-      <img src="./images/Katie.png" width="100">
-      <br><b>박기은</b><br>역할 | FRONT<br>
-      <a href="https://github.com/gieun-Park"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
-    </td>
-    <td align="center" width="150px">
-      <img src="./images/Tom Nook.png" width="100">
-      <br><b>박은지</b><br>역할 | DB/BACK<br>
-      <a href="https://github.com/lo1f0306"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
-    </td>
-    <td align="center" width="150px">
-      <img src="./images/Dotty.png" width="100">
-      <br><b>윤정연</b><br>역할 | FRONT<br>
-      <a href="https://github.com/dimolto3"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
-    </td>
-    <td align="center" width="150px">
-      <img src="./images/lsabelle.png" width="100">
-      <br><b>홍지윤</b><br>역할 | DB/BACK<br>
-      <a href="https://github.com/jyh-skn"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
-    </td>
+    <td align="center" width="160px"><img src="./images/Leonardo.png" width="100" height="100" style="object-fit: contain;"></td>
+    <td align="center" width="160px"><img src="./images/Bluebear.png" width="100" height="100" style="object-fit: contain;"></td>
+    <td align="center" width="160px"><img src="./images/Katie.png" width="100" height="100" style="object-fit: contain;"></td>
+    <td align="center" width="160px"><img src="./images/Tom Nook.png" width="100" height="100" style="object-fit: contain;"></td>
+    <td align="center" width="160px"><img src="./images/Dotty.png" width="100" height="100" style="object-fit: contain;"></td>
+    <td align="center" width="160px"><img src="./images/lsabelle.png" width="100" height="100" style="object-fit: contain;"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>이창우</b></td>
+    <td align="center"><b>김지윤</b></td>
+    <td align="center"><b>박기은</b></td>
+    <td align="center"><b>박은지</b></td>
+    <td align="center"><b>윤정연</b></td>
+    <td align="center"><b>홍지윤</b></td>
+  </tr>
+  <tr>
+    <td align="center">PM</td>
+    <td align="center">FRONT</td>
+    <td align="center">FRONT</td>
+    <td align="center">DB/BACK</td>
+    <td align="center">FRONT</td>
+    <td align="center">DB/BACK</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/Gloveman"><img src="https://img.shields.io/badge/Gloveman-181717?style=for-the-badge&logo=github&logoColor=white"></a></td>
+    <td align="center"><a href="https://github.com/JiyounKim-EllyKim"><img src="https://img.shields.io/badge/JiyounKim-181717?style=for-the-badge&logo=github&logoColor=white"></a></td>
+    <td align="center"><a href="https://github.com/gieun-Park"><img src="https://img.shields.io/badge/gieun--Park-181717?style=for-the-badge&logo=github&logoColor=white"></a></td>
+    <td align="center"><a href="https://github.com/lo1f0306"><img src="https://img.shields.io/badge/lo1f0306-181717?style=for-the-badge&logo=github&logoColor=white"></a></td>
+    <td align="center"><a href="https://github.com/dimolto3"><img src="https://img.shields.io/badge/dimolto3-181717?style=for-the-badge&logo=github&logoColor=white"></a></td>
+    <td align="center"><a href="https://github.com/jyh-skn"><img src="https://img.shields.io/badge/jyh--skn-181717?style=for-the-badge&logo=github&logoColor=white"></a></td>
   </tr>
 </table>
 
