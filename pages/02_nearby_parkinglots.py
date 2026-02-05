@@ -26,7 +26,7 @@ if "destination" not in st.session_state: #검색 결과
 # 4. 상단 로고 (검색바는 아래 right_col로 이동)
 st.title("🚗 Parking Mate")
 st.write("---")
-
+st.subheader(f"🔍 검색 결과 ({len(st.session_state.search_results) if len(st.session_state.search_results)>0 else 0}건)")
 # 5. 메인 레이아웃 분할: 왼쪽(리스트) | 오른쪽(검색창 + 지도)
 left_col, right_col = st.columns([1, 2])
 
@@ -53,7 +53,6 @@ with right_col:
                 st.session_state.destination = dest
                 parking_lots = get_near_parking_data(dest)
                 st.session_state.search_results = parking_lots
-                print(parking_lots)
                 st.rerun()  # 데이터를 세션에 넣은 후 화면 즉시 갱신
         else:
             st.warning("검색어를 입력해 주세요.")
@@ -83,7 +82,8 @@ with right_col:
     for parking_lot in st.session_state.search_results:
         folium.Marker(
             location=[parking_lot.lat, parking_lot.lng],
-            popup=f"<b>{parking_lot.name}</b><br>{parking_lot.full_addr}<br>면수: {parking_lot.space_no}",
+
+            popup="수정예정", #여기 수정하시면 됩니다!
             tooltip=parking_lot.name,
             icon=folium.Icon(color='orange', icon='info-sign')
         ).add_to(m)
@@ -94,16 +94,18 @@ with right_col:
 
 # --- 왼쪽 영역: 검색 결과 리스트 ---
 with left_col:
-    st.subheader(f"🔍 검색 결과 ({len(st.session_state.search_results) if len(st.session_state.search_results)>0 else 0}건)")
-    sort_option = st.radio("정렬", ["가까운순 ▼", "이름순▼", "이름순▲"], horizontal=True)
-    st.write("---")
+    sort_option = st.radio("", ["가까운순 ▼", "이름순▼", "이름순▲"], horizontal=True)
     if st.session_state.search_results:
         total_items = len(st.session_state.search_results)
         total_pages = math.ceil(total_items / ITEMS_PER_PAGE)
         start_idx = (st.session_state.current_page - 1) * ITEMS_PER_PAGE
         end_idx = start_idx + ITEMS_PER_PAGE
-        page_data = st.session_state.search_results[start_idx:end_idx]
-
+        if sort_option== '가까운순 ▼':
+            page_data = st.session_state.search_results[start_idx:end_idx]
+        elif sort_option== '이름순▼':
+            page_data = sorted(st.session_state.search_results, key=lambda x:x.name, reverse=True)[start_idx:end_idx]
+        else:
+            page_data = sorted(st.session_state.search_results, key=lambda x: x.name)[start_idx:end_idx]
 
         for parking_lot in page_data:
             with st.container():
@@ -117,15 +119,26 @@ with left_col:
 
         col_prev, col_page, col_next = st.columns([1, 2, 1])
         with col_prev:
-            if st.button("이전") and st.session_state.current_page > 1:
+            is_first = st.session_state.current_page == 1
+            if st.button("⬅️ 이전", use_container_width=True, disabled=is_first):
                 st.session_state.current_page -= 1
                 st.rerun()
 
         with col_page:
-            st.write(f"{st.session_state.current_page} / {total_pages}")
+            st.markdown(
+                f"""
+                    <div style="text-align: center; background-color: #f0f2f6; border-radius: 8px; padding: 4px;">
+                        <span style="font-size: 0.9rem; color: #555;">Page</span><br>
+                        <strong style="font-size: 1.2rem; color: #007BFF;">{st.session_state.current_page}</strong> 
+                        <span style="color: #999;">/ {total_pages}</span>
+                    </div>
+                    """,
+                unsafe_allow_html=True
+            )
 
         with col_next:
-            if st.button("다음") and st.session_state.current_page < total_pages:
+            is_last = st.session_state.current_page == total_pages
+            if st.button("다음 ➡️", use_container_width=True, disabled=is_last):
                 st.session_state.current_page += 1
                 st.rerun()
     else:
