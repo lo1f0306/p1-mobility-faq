@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_folium import st_folium
 import folium
+from folium.plugins import MarkerCluster
 import math
 import urllib
 
@@ -92,15 +93,14 @@ with right_col:
         zoom_level = 12
 
     m = folium.Map(location=[center_lat, center_lng], zoom_start=zoom_level)
+    cluster = MarkerCluster().add_to(m)
     # 목적지 마커 추가
-
-    # 주차장 마커 추가
     if st.session_state.destination:
         dest = st.session_state.destination
         folium.Marker(
             location=[dest.lat, dest.lng],
             icon=folium.Icon(color="red", icon="star")
-        ).add_to(m)
+        ).add_to(cluster)
 
     # 주차장 마커 추가
     for parking_lot in st.session_state.search_results:
@@ -143,7 +143,7 @@ with right_col:
             location=[parking_lot.lat, parking_lot.lng],
             popup=folium.Popup(popup_html, max_width=300),
             icon=folium.Icon(color='blue', icon='info-sign')
-        ).add_to(m)
+        ).add_to(cluster)
 
     st_folium(m, width="100%", height=600, key="main_map", returned_objects=[])
 

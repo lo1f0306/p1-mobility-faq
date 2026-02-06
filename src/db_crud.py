@@ -48,9 +48,33 @@ def get_near_parking_data(_dest: Destination):
     except Exception as e:
         st.error(f"DB 연결 오류: {e}")
         return []
-
-def get_parkinglots_by_region():
-    return
+@st.cache_data
+def get_sido_sigungu():
+    try:
+        conn = get_connection()
+        if not conn:
+            return list()
+        if not conn.is_connected():
+            conn.reconnect(attempts=3, delay=2)
+        sql = '''
+            select 
+                  distinct sido, sigungu
+                from parking_lot
+               where name like '%주차장%'
+              '''
+        with conn.cursor(dictionary=True) as cursor:
+            cursor.execute(sql)
+            result = {}
+            rows = cursor.fetchall()
+            for row in rows:
+                if row['sido'] not in result:
+                    result[row['sido']] = []
+                else:
+                    result[row['sido']].append(row['sigungu'])
+            return result
+    except Exception as e:
+        st.error(f"DB 연결 오류: {e}")
+        return dict()
 
 def run_query(query, params=None, is_select=True):
     """
