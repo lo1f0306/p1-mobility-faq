@@ -21,22 +21,21 @@ if 'destination' not in st.session_state:   # 검색 결과
 if "current_page" not in st.session_state: #리스트에서 현재 탐색중인 페이지
     st.session_state.current_page = 1
 
-
-
 # --- 레이아웃 ---
+
+stations = st.session_state['oil_results']
+# 4. 상단 로고 (검색바는 아래 right_col로 이동)
 st.title("⛽ Gas Station Mate")
 st.write("---")
-
+st.subheader(f"🔍 검색 결과 ({len(stations)}건)")
+# 5. 메인 레이아웃 분할: 왼쪽(리스트) | 오른쪽(검색창 + 지도)
 left_col, right_col = st.columns([1, 2])
-stations = st.session_state['oil_results']
 
 # --- 왼쪽 영역: 검색 결과 리스트 ---
 with left_col:
-    st.subheader(f"🔍 검색 결과 ({len(stations)}건)")
-
+    sort_option = st.radio("", ["가까운순▼", "가격낮은순▼", "이름순▲", "이름순▼"], horizontal=True)
     if stations:
         # 정렬 라디오 버튼 (이 코드가 subheader 바로 아래 있어야 화면에 뜹니다)
-        sort_option = st.radio("정렬 방식", ["가까운순▼", "가격낮은순▼", "이름순▲", "이름순▼"], horizontal=True)
         st.write("---")
 
         # ---------------- 2. 필터 정렬 로직 (stations 리스트 직접 정렬) ----------------
@@ -123,7 +122,7 @@ with right_col:
     with st.form(key='search_form'):
         search_col, btn_col = st.columns([4, 1])
         with search_col:
-            address_input = st.text_input("어디 근처 주유소를 찾으시나요?", placeholder="예: 강남역, 성수동, 분당구 등")
+            address_input = st.text_input("어디 근처 주유소를 찾으시나요?", placeholder="예: 강남역, 성수동, 분당구 등", label_visibility="collapsed")
         with btn_col:
             search_submit = st.form_submit_button("검색")
 

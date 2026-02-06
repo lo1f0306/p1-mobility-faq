@@ -52,60 +52,17 @@ st.set_page_config(layout="wide", page_title="Parking Mate")
 st.title("🚗 Parking Mate")
 st.write("---")
 
+df = st.session_state.search_result
+all_data = get_region_parking_data()
 
 # --- 상단 구현 ---
-# 1. 입력부: 검색바와 버튼
-# 검색창과 버튼을 나란히 배치하기 위해 컬럼 사용
-col1, col2, col3 = st.columns([0.45, 0.45, 0.1])
-df = get_region_parking_data()
-
-
-with col1:
-    st.session_state.sido_name = col1.selectbox(
-        '시도 선택',
-        #sorted(df['sido'].unique()),           # 시도명을 가나다순으로 정렬
-        sorted(st.session_state.region_data.keys()), #딕셔너리의 키값들
-        index=None,                                 # 처음 선택을 None으로 초기화
-        placeholder='시도명을 선택해주세요.',
-        label_visibility="collapsed"
-    )
-with col2:
-    if st.session_state.sido_name:      # 시도명이 선택되면 선택된 시도명에 해당하는 시군구 필터링해 출력.
-        data_sd = df[df['sido'] == st.session_state.sido_name]
-        st.session_state.sgg_name = col2.selectbox(
-            '시군구 선택',
-        #    sorted(data_sd['sigungu'].unique()),  # 시군구명을 가나다순으로 정렬
-            sorted(st.session_state.region_data[st.session_state.sido_name]), # 딕셔너리 값 조회
-            index=None,                             # 처음 선택을 None으로 초기화
-            placeholder='시군구명을 선택해주세요.',
-            label_visibility="collapsed"
-        )
-    else:           # 시도명이 선택되지 않았을 시 빈 selectbox 출력.
-        st.session_state.sgg_name = col2.selectbox(
-            '시군구 선택',
-            [],                             # 시도명이 선택되기 전 빈 리스트 띄움
-            index=None,                             # 처음 선택을 None으로 초기화
-            placeholder='시도명을 먼저 선택해주세요.',
-            label_visibility="collapsed"
-        )
-
-with col3:
-    search_btn = st.button("검색", use_container_width=True)
-    if st.session_state.sido_name and st.session_state.sgg_name and search_btn:     # 시도명, 시군구명, 버튼 클릭이 모두 충족되는 경우
-        st.session_state.search_result = data_sd[data_sd['sigungu'] == st.session_state.sgg_name] # 결과 값에 시군구명까지 필터링한 데이터 저장
-#        print(st.session_state.search_result)
-
-
-# --- 하단 구현 ---
 left_col, right_col = st.columns([1, 2])
-df = st.session_state.search_result
 
 # --- 왼쪽 영역: 조회 결과 리스트 ---
 with left_col:
     st.subheader(f"🔍 검색 결과 ({len(df)}건)")
     # 1. 필터 UI (조회 결과 리스트 바로 위나 적절한 위치에 배치)
     sort_option = st.radio("", ["이름순▼", "이름순▲"], horizontal=True)
-    st.write("---")
 
     if not df.empty:
         # ---------------- 여기에 필터 정렬 로직 추가 ----------------
@@ -142,6 +99,45 @@ with left_col:
 
 # --- 오른쪽 영역: 지도 ---
 with right_col:
+    with st.container():
+        col1, col2, col3 = st.columns([0.45, 0.45, 0.1])
+
+        with col1:
+            st.session_state.sido_name = col1.selectbox(
+                '시도 선택',
+                # sorted(df['sido'].unique()),           # 시도명을 가나다순으로 정렬
+                sorted(st.session_state.region_data.keys()),  # 딕셔너리의 키값들
+                index=None,  # 처음 선택을 None으로 초기화
+                placeholder='시도명을 선택해주세요.',
+                label_visibility="collapsed"
+            )
+        with col2:
+            if st.session_state.sido_name:  # 시도명이 선택되면 선택된 시도명에 해당하는 시군구 필터링해 출력.
+                data_sd = all_data[all_data['sido'] == st.session_state.sido_name]
+                st.session_state.sgg_name = col2.selectbox(
+                    '시군구 선택',
+                    #    sorted(data_sd['sigungu'].unique()),  # 시군구명을 가나다순으로 정렬
+                    sorted(st.session_state.region_data[st.session_state.sido_name]),  # 딕셔너리 값 조회
+                    index=None,  # 처음 선택을 None으로 초기화
+                    placeholder='시군구명을 선택해주세요.',
+                    label_visibility="collapsed"
+                )
+            else:  # 시도명이 선택되지 않았을 시 빈 selectbox 출력.
+                st.session_state.sgg_name = col2.selectbox(
+                    '시군구 선택',
+                    [],  # 시도명이 선택되기 전 빈 리스트 띄움
+                    index=None,  # 처음 선택을 None으로 초기화
+                    placeholder='시도명을 먼저 선택해주세요.',
+                    label_visibility="collapsed"
+                )
+
+        with col3:
+            search_btn = st.button("검색", use_container_width=True)
+            if st.session_state.sido_name and st.session_state.sgg_name and search_btn:  # 시도명, 시군구명, 버튼 클릭이 모두 충족되는 경우
+                st.session_state.search_result = data_sd[
+                    data_sd['sigungu'] == st.session_state.sgg_name]  # 결과 값에 시군구명까지 필터링한 데이터 저장
+            #        print(st.session_state.search_result)
+
     # 지도 표시
     center_lat, center_lng = (df.iloc[0]['lat'], df.iloc[0]['lng']) if not df.empty else (37.5665, 126.9780)
     m = folium.Map(location=[center_lat, center_lng], zoom_start=14 if not df.empty else 12)

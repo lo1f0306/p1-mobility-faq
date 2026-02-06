@@ -42,7 +42,7 @@ left_col, right_col = st.columns([1, 2])
 with right_col:
     # 지도 너비에 맞춘 단일 검색 폼
     with st.form(key='main_search_form'):
-        search_input_col, search_btn_col = st.columns([5, 1])
+        search_input_col, search_btn_col = st.columns([4, 1])
         with search_input_col:
             target_location = st.text_input(
                 label="검색어 입력",
