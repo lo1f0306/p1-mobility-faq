@@ -88,14 +88,27 @@
 ```bash
 project-root/           
 ├── data/
-│   ├── dump.sql              # 테이블 생성 및 데이터 동기화용 DB 쿼리
-├── src/                      # 소스 코드 모듈
+│   └── create_table.sql              # 테이블 생성 용 DB 쿼리
+├── images/                           # Streamlit 페이지들   
+├── pages/                            # README 프로필 이미지
+│   ├── 01_entry_page.py              # main page
+│   ├── 02_nearby_parkinglots.py      # 목적지 주변 주차장 조회 페이지
+│   ├── 03_prototype_category_app.py  # 지역별 주차장 조회 페이지
+│   ├── 04_search_gas_station.py      # 검색 장소 주변 주유소 조회 페이지
+│   └── 05_search_parking_gas.py      # 주차장 & 주유소 통합 조회 페이지
+├── prototype/                        # 실험적 기능 작성용
+├── src/                              # 소스 코드 모듈
 │   ├── __init__.py            
-│   └── database.py           # DB 연결 로직
-├── app.py                    # steamlit 메인 페이지 
-├── requirements.txt          # 필요 라이브러리 목록
+│   ├── API_Gas.ipynb                 # 주유소 api 테스트용 notebook
+│   ├── collect_data.py               # parking_lot db 적재
+│   ├── config.py                     # env 파일에서 db 연결 정보, API key 등 불러오기
+│   ├── db_crud.py                    # mysql DB와 통신
+│   ├── model.py                      # DB entity class 및 파싱용 class들 
+│   └── utils.py                      # API 호출 등 유틸 함수 모음
+├── app.py                            # Streamlit main 진입점 
+├── requirements.txt                  # 필요 라이브러리 목록
 ├── .gitignore                
-└── README.md                 # 프로젝트 소개, 설치 및 실행 가이드
+└── README.md                         # 프로젝트 소개 페이지
 ```
 
 ---
