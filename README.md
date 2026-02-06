@@ -56,20 +56,20 @@
 지도 시각화와 카드 UI를 통해 복잡한 검색 과정 없이 직관적인 모빌리티 환경을 제공합니다.
 
 ### 📌 프로젝트 내용
-1️⃣ 장소 기반 주차장&주유소 검색 및 시각화
+1️⃣ **장소 기반 주차장 & 주유소 검색 및 시각화**
 - 사용자의 검색 의도에 맞춰 정보를 파악할 수 있는 직관적인 모빌리티 탐색 환경을 제공
 - 사용자가 입력한 장소 또는 주소의 좌표를 분석하여, 해당 위치 반경 내의 정보를 조회
 - 주차장과 주유소 정보를 동시에 제공하여 최신성과 안정성을 확보
 - 실시간 위치 추적 없이도 원하는 장소 주변 상황을 미리 탐색해 볼 수 있어 사용자 편의성을 높임
 - 방대한 양의 데이터를 지도 마커와 카드를 활용하여 한눈에 파악할 수 있도록 구현
 
-2️⃣ 공공데이터 Open API 수집 및 가공
+2️⃣ **공공데이터 Open API 수집 및 가공**
 - 신뢰성 높은 공공기관의 데이터를 활용하여 프로젝트에 데이터셋을 구축
 - 공공데이터 Open API를 통해 전국의 주유소 및 주차장 정보 수집
 - 수집한 주차장 데이터를 프로젝트용 DB에 적재하여, API 호출 없이 시스템 내에서 독립적으로 데이터 핸들링 가능하도록 설계
 - 주유소 정보는 실시간 API 호출을 활용하여 변동성 있는 가격의 정확성을 높임
 
-3️⃣ MySQL 인프라 구축 및 공간 데이터 활용 
+3️⃣ **MySQL 인프라 구축 및 공간 데이터 활용** 
 - 대량의 데이터를 효율적으로 관리하고 정교한 위치 기반 필터링을 수행할 수 있는 백엔드 구조를 실현
 - 수집한 수만 건에 달하는 주차장 공공데이터를 MySQL 환경에 안정적으로 구축
 - 위도와 경도 데이터를 활용한 공간 쿼리를 작성하여 사용자가 지정한 위치에서 정확한 거리 내에 있는 정보만을 추출하는 고정밀 필터링 프로세스를 구현
@@ -120,15 +120,22 @@ project-root/
 - **Infra**: ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
----
-
-## 💢트러블슈팅
-
----
-
 
 ## ✅수행 결과
+### Home화면
+<img width="1800" height="900" alt="image" src="https://github.com/user-attachments/assets/f15e1087-711b-440d-b0ab-f687b1ce1ed4" />
 
+### 주차장 조회 화면 
+<img width="1800" height="900" alt="image" src="https://github.com/user-attachments/assets/a5a90d7c-132b-4e6f-b1aa-c6c09da41b2c" />
+
+### 지도에 표출되는 마커 정보와 카카오 맵 연동
+<img width="1800" height="900" alt="image" src="https://github.com/user-attachments/assets/2e7df91a-19a2-408d-ba16-b88cc3ce20cd" />
+
+### 주유소 조회 화면
+<img width="1902" height="904" alt="image" src="https://github.com/user-attachments/assets/d2c2e411-32c8-46a2-b7ac-b1fc05cf3848" />
+
+### 주차장과 주유소 통합 조회 화면
+<img width="1880" height="906" alt="image" src="https://github.com/user-attachments/assets/e5bd57cf-f5ad-4385-940e-10c9ff964529" />
 
 ---
 ## 🫱🏻‍🫲🏻팀원 회고
