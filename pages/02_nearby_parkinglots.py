@@ -158,7 +158,7 @@ with left_col:
                     <h4 style="margin:0; color:black;">{parking_lot.name}</h4>
                     <p style="margin:5px 0; font-size:14px; color:#666;">📍 {parking_lot.full_addr}</p>
                     <p style="margin:0; color:#007BFF; font-weight:bold;">🅿️ 주차면수: {parking_lot.space_no}면</p>
-                    <p><b>📏 거리:</b> {parking_lot.distance}m </p>
+                    <p style="margin:5px 0; font-size:14px; color:#666;"><b>📏 거리:</b> {round(parking_lot.distance,2)}m </p>
                 </div>
                 """, unsafe_allow_html=True)
 
