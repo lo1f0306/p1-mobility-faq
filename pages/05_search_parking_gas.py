@@ -36,7 +36,6 @@ BRAND_MAP = {
     'NHO': '농협알뜰', 'ETC': '자가상표', 'E1G': 'E1', 'SKG': 'SK가스', 'RTO': '자영알뜰'
 }
 
-
 # 2. 페이지 설정
 st.set_page_config(layout="wide", page_title="Parking & Gas Mate")
 
@@ -63,21 +62,20 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
 # 3. 세션 상탸 초기화
-if 'parking_results' not in st.session_state:   # 주차장 조회 결과 저장
+if 'parking_results' not in st.session_state:  # 주차장 조회 결과 저장
     st.session_state.parking_results = []
 
-if 'oil_results' not in st.session_state:       # 주유소 조회 결과 저장
+if 'oil_results' not in st.session_state:  # 주유소 조회 결과 저장
     st.session_state.oil_results = []
 
-if 'map_center' not in st.session_state:        # 지도 표시 위치 초기화
+if 'map_center' not in st.session_state:  # 지도 표시 위치 초기화
     st.session_state.map_center = [37.5665, 126.9780]  # 서울 시청 기준
 
-if "current_page" not in st.session_state: #리스트에서 현재 탐색중인 페이지
+if "current_page" not in st.session_state:  # 리스트에서 현재 탐색중인 페이지
     st.session_state.current_page = 1
 
-if "destination" not in st.session_state: #검색 결과
+if "destination" not in st.session_state:  # 검색 결과
     st.session_state.destination = None
 
 
@@ -107,11 +105,37 @@ def get_oil_stations(lat, lon, radius=3000):
         st.error(f"오피넷 API 오류: {e}")
         return []
 
+# todo: 주차장 리스트 표시
+def parking_spot(page_data_parking):
+    for parking_lot in page_data_parking:
+        with st.container():
+            st.markdown(f"""
+            <div style="border:1px solid #ddd; padding:15px; border-radius:10px; margin-bottom:10px; background-color:white;">
+                <h4 style="margin:0; color:black;">{parking_lot.name}</h4>
+                <p style="margin:5px 0; font-size:14px; color:#666;">📍 {parking_lot.full_addr}</p>
+                <p style="margin:0; color:#007BFF; font-weight:bold;">🅿️ 주차면수: {parking_lot.space_no}면</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+# todo: 주유소 리스트 표시
+def oil_spot(oil_data_parking):
+    for s in page_data_oil:
+        with st.container():
+            st.markdown(f"""
+                    <div style="border:1px solid #ddd; padding:15px; border-radius:10px; margin-bottom:10px; background-color:white;">
+                        <h4 style="margin:0; color:#333;">{s['OS_NM']} <small style="color:#666;">({s['brand_nm']})</small></h4>
+                        <p style="margin:5px 0; font-size:16px; color:#ff4b4b; font-weight:bold;">가격: {int(s['PRICE']):,}원</p>
+                        <p style="margin:0; font-size:13px; color:#666;">📏 거리: {s['DISTANCE']}m</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+
 # 4. 상단 로고 (검색바는 아래 right_col로 이동)
 st.title("🚗 Parking & Oil Mate ⛽")
 st.write("---")
-st.subheader(f"🔍 검색 결과 주차장: ({len(st.session_state.parking_results) if len(st.session_state.parking_results)>0 else 0}건) | "
-             f"주유소: ({len(st.session_state.oil_results) if len(st.session_state.oil_results)>0 else 0}건)")
+st.subheader(
+    f"🔍 검색 결과 주차장: ({len(st.session_state.parking_results) if len(st.session_state.parking_results) > 0 else 0}건) | "
+    f"주유소: ({len(st.session_state.oil_results) if len(st.session_state.oil_results) > 0 else 0}건)")
 
 print(len(st.session_state.parking_results))
 print(len(st.session_state.oil_results))
@@ -121,6 +145,7 @@ left_col, right_col = st.columns([1, 2])
 
 # --- 왼쪽 영역: 검색 결과 리스트 ---
 with left_col:
+    option = st.radio("", ["전체", "주차장", "주유소"], horizontal=True)
     if st.session_state.parking_results or st.session_state.oil_results:
         total_items = len(st.session_state.parking_results) + len(st.session_state.oil_results)
         total_pages = math.ceil(total_items / ITEMS_PER_PAGE)
@@ -133,27 +158,15 @@ with left_col:
         end_idx = start_idx + ITEMS_PER_PAGE
 
         page_data_parking = sorted(st.session_state.parking_results, key=lambda x: x.name)[start_idx:end_idx]
-
-        for parking_lot in page_data_parking:
-            with st.container():
-                st.markdown(f"""
-                <div style="border:1px solid #ddd; padding:15px; border-radius:10px; margin-bottom:10px; background-color:white;">
-                    <h4 style="margin:0; color:black;">{parking_lot.name}</h4>
-                    <p style="margin:5px 0; font-size:14px; color:#666;">📍 {parking_lot.full_addr}</p>
-                    <p style="margin:0; color:#007BFF; font-weight:bold;">🅿️ 주차면수: {parking_lot.space_no}면</p>
-                </div>
-                """, unsafe_allow_html=True)
-
         page_data_oil = st.session_state.oil_results[start_idx:end_idx]
-        for s in page_data_oil:
-            with st.container():
-                st.markdown(f"""
-                        <div style="border:1px solid #ddd; padding:15px; border-radius:10px; margin-bottom:10px; background-color:white;">
-                            <h4 style="margin:0; color:#333;">{s['OS_NM']} <small style="color:#666;">({s['brand_nm']})</small></h4>
-                            <p style="margin:5px 0; font-size:16px; color:#ff4b4b; font-weight:bold;">가격: {int(s['PRICE']):,}원</p>
-                            <p style="margin:0; font-size:13px; color:#666;">📏 거리: {s['DISTANCE']}m</p>
-                        </div>
-                        """, unsafe_allow_html=True)
+
+        if option == "전체":
+            parking_spot(page_data_parking)
+            oil_spot(page_data_oil)
+        if option == "주차장":
+            parking_spot(page_data_parking)
+        if option == "주유소":
+            oil_spot(page_data_oil)
 
         st.write("---")
 
@@ -180,7 +193,6 @@ with left_col:
                     st.rerun()
     else:
         st.info("오른쪽 검색창에서 가고 싶은 곳을 검색해 보세요!")
-
 
 # --- 오른쪽 영역: 검색창(상단) + 지도(하단) ---
 with right_col:
@@ -211,102 +223,224 @@ with right_col:
             st.warning("검색어를 입력해 주세요.")
 
     # 지도 표시 로직
-    if st.session_state.parking_results and len(st.session_state.parking_results)>0:
-        # 데이터가 있을 때 첫 번째 검색 결과 위치로 이동
-        center_lat = st.session_state.parking_results[0].lat
-        center_lng = st.session_state.parking_results[0].lng
-        zoom_level = 14
-    else:
-        center_lat, center_lng = 37.5665, 126.9780  # 서울 기본 위치
-        zoom_level = 12
-
-    m = folium.Map(location=[center_lat, center_lng], zoom_start=zoom_level)
-    cluster = MarkerCluster().add_to(m)
-    # 목적지 마커 추가
-    if st.session_state.destination:
-        dest = st.session_state.destination
-        folium.Marker(
-            location=[dest.lat, dest.lng],
-            icon=folium.Icon(color="red", icon="star")
-        ).add_to(m)
-
-    # 주차장 마커 추가
-    for parking_lot in st.session_state.parking_results:
-        # 1. 길찾기를 위한 출발지 정보 (검색창에 입력한 위치)
-        if st.session_state.destination:
-            # 주소 전체보다는 사용자가 검색한 명칭이 가독성이 좋습니다.
-            raw_start_name = st.session_state.destination.name if st.session_state.destination.name else "내 목적지"
-            start_lat = st.session_state.destination.lat
-            start_lon = st.session_state.destination.lng
+    # todo: 전체를 선택했을 때 map 표시 (parking(하늘색 마커) + oil(초록색 마커))
+    if option == "전체":
+        if st.session_state.parking_results or st.session_state.oil_results:
+            # 데이터가 있을 때 첫 번째 검색 결과 위치로 이동
+            center_lat = st.session_state.parking_results[0].lat
+            center_lng = st.session_state.parking_results[0].lng
+            zoom_level = 14
         else:
-            raw_start_name = "내 목적지"
-            start_lat, start_lon = center_lat, center_lng
+            center_lat, center_lng = 37.5665, 126.9780  # 서울 기본 위치
+            zoom_level = 12
 
-        # 2. 안전한 URL 생성을 위한 인코딩 처리
-        s_name = urllib.parse.quote(raw_start_name)
-        e_name = urllib.parse.quote(parking_lot.name)
+        m = folium.Map(location=[center_lat, center_lng], zoom_start=zoom_level)
+        cluster = MarkerCluster().add_to(m)
+        # 목적지 마커 추가
+        if st.session_state.destination:
+            dest = st.session_state.destination
+            folium.Marker(
+                location=[dest.lat, dest.lng],
+                icon=folium.Icon(color="red", icon="star")
+            ).add_to(m)
 
-        # 카카오맵 길찾기 'dir' 파라미터 구성
-        # sp: 출발지 좌표 및 이름, ep: 목적지 좌표 및 이름
-        kakao_dir_url = (
-            f"https://map.kakao.com/link/from/{s_name},{start_lat},{start_lon}"
-            f"/to/{e_name},{parking_lot.lat},{parking_lot.lng}"
-        )
+        # 주차장 마커 추가
+        for parking_lot in st.session_state.parking_results:
+            # 1. 길찾기를 위한 출발지 정보 (검색창에 입력한 위치)
+            if st.session_state.destination:
+                # 주소 전체보다는 사용자가 검색한 명칭이 가독성이 좋습니다.
+                raw_start_name = st.session_state.destination.name if st.session_state.destination.name else "내 목적지"
+                start_lat = st.session_state.destination.lat
+                start_lon = st.session_state.destination.lng
+            else:
+                raw_start_name = "내 목적지"
+                start_lat, start_lon = center_lat, center_lng
 
-        popup_html = f"""
-            <div style="width:220px; font-family: 'Nanum Gothic', sans-serif; line-height:1.5;">
-                <h4 style="margin:0 0 5px 0; color:#333;">{parking_lot.name}</h4>
-                <div style="font-size:13px; color:#666; margin-bottom:10px;">
-                    <b>📍 주소:</b> {parking_lot.full_addr}<br>
-                    <b>🅿️ 주차면수:</b> <span style="color:#007BFF; font-weight:bold;">{parking_lot.space_no}면</span>
-                </div>
-                <a href="{kakao_dir_url}" target="_blank" 
-                   style="display:block; text-align:center; padding:8px; background-color:#FAE100; color:#3C1E1E; text-decoration:none; border-radius:5px; font-size:13px; font-weight:bold;">
-                   🚕 자동으로 길찾기 시작
-                </a>
-            </div>
-            """
+            # 2. 안전한 URL 생성을 위한 인코딩 처리
+            s_name = urllib.parse.quote(raw_start_name)
+            e_name = urllib.parse.quote(parking_lot.name)
 
-        folium.Marker(
-            location=[parking_lot.lat, parking_lot.lng],
-            popup=folium.Popup(popup_html, max_width=300),
-            icon=folium.Icon(color='blue', icon='info-sign')
-        ).add_to(cluster)
+            # 카카오맵 길찾기 'dir' 파라미터 구성
+            # sp: 출발지 좌표 및 이름, ep: 목적지 좌표 및 이름
+            kakao_dir_url = (
+                f"https://map.kakao.com/link/from/{s_name},{start_lat},{start_lon}"
+                f"/to/{e_name},{parking_lot.lat},{parking_lot.lng}"
+            )
 
-    # 주유소 마커 추가
-    for oil_lot in st.session_state.oil_results:
-        # 출발지 정보: 사용자가 검색한 주소와 좌표
-        # 목적지 정보: 주유소 이름과 좌표
-        start_name = target_location if target_location else "내 검색 위치"
-        start_lat, start_lon = st.session_state['map_center']
-
-        # 카카오맵 길찾기 'dir' 파라미터 구성
-        # sp: 출발지 좌표 및 이름, ep: 목적지 좌표 및 이름
-        kakao_dir_url = (
-            f"https://map.kakao.com/link/from/{start_name},{start_lat},{start_lon}"
-            f"/to/{oil_lot['OS_NM']},{oil_lot['lat']},{oil_lot['lng']}"
-        )
-
-        popup_html = f"""
-                    <div style="width:220px; font-family: 'Nanum Gothic', sans-serif; line-height:1.5;">
-                        <h4 style="margin:0 0 5px 0; color:#333;">{s['OS_NM']}</h4>
-                        <div style="font-size:13px; color:#666; margin-bottom:10px;">
-                            <b>💰 가격:</b> <span style="color:#ff4b4b; font-weight:bold;">{int(s['PRICE']):,}원</span><br>
-                            <b>™️ 브랜드:</b> {s['brand_nm']}<br>
-                            <b>📏 거리:</b> {s['DISTANCE']}m
-                        </div>
-                        <a href="{kakao_dir_url}" target="_blank" 
-                           style="display:block; text-align:center; padding:8px; background-color:#FAE100; color:#3C1E1E; text-decoration:none; border-radius:5px; font-size:13px; font-weight:bold;">
-                           🚕 자동으로 길찾기 시작
-                        </a>
+            popup_html = f"""
+                <div style="width:220px; font-family: 'Nanum Gothic', sans-serif; line-height:1.5;">
+                    <h4 style="margin:0 0 5px 0; color:#333;">{parking_lot.name}</h4>
+                    <div style="font-size:13px; color:#666; margin-bottom:10px;">
+                        <b>📍 주소:</b> {parking_lot.full_addr}<br>
+                        <b>🅿️ 주차면수:</b> <span style="color:#007BFF; font-weight:bold;">{parking_lot.space_no}면</span>
                     </div>
-                    """
+                    <a href="{kakao_dir_url}" target="_blank" 
+                       style="display:block; text-align:center; padding:8px; background-color:#FAE100; color:#3C1E1E; text-decoration:none; border-radius:5px; font-size:13px; font-weight:bold;">
+                       🚕 자동으로 길찾기 시작
+                    </a>
+                </div>
+                """
 
-        folium.Marker(
-            location=[oil_lot['lat'], oil_lot['lng']],
-            popup=folium.Popup(popup_html, max_width=300),
-            icon=folium.Icon(color='green', icon='oil-can', prefix='fa')
-        ).add_to(cluster)
+            folium.Marker(
+                location=[parking_lot.lat, parking_lot.lng],
+                popup=folium.Popup(popup_html, max_width=300),
+                icon=folium.Icon(color='blue', icon='info-sign')
+            ).add_to(cluster)
+
+        # 주유소 마커 추가
+        for oil_lot in st.session_state.oil_results:
+            # 출발지 정보: 사용자가 검색한 주소와 좌표
+            # 목적지 정보: 주유소 이름과 좌표
+            start_name = target_location if target_location else "내 검색 위치"
+            start_lat, start_lon = st.session_state['map_center']
+
+            # 카카오맵 길찾기 'dir' 파라미터 구성
+            # sp: 출발지 좌표 및 이름, ep: 목적지 좌표 및 이름
+            kakao_dir_url = (
+                f"https://map.kakao.com/link/from/{start_name},{start_lat},{start_lon}"
+                f"/to/{oil_lot['OS_NM']},{oil_lot['lat']},{oil_lot['lng']}"
+            )
+
+            popup_html = f"""
+                        <div style="width:220px; font-family: 'Nanum Gothic', sans-serif; line-height:1.5;">
+                            <h4 style="margin:0 0 5px 0; color:#333;">{oil_lot['OS_NM']}</h4>
+                            <div style="font-size:13px; color:#666; margin-bottom:10px;">
+                                <b>💰 가격:</b> <span style="color:#ff4b4b; font-weight:bold;">{int(oil_lot['PRICE']):,}원</span><br>
+                                <b>™️ 브랜드:</b> {oil_lot['brand_nm']}<br>
+                                <b>📏 거리:</b> {oil_lot['DISTANCE']}m
+                            </div>
+                            <a href="{kakao_dir_url}" target="_blank" 
+                               style="display:block; text-align:center; padding:8px; background-color:#FAE100; color:#3C1E1E; text-decoration:none; border-radius:5px; font-size:13px; font-weight:bold;">
+                               🚕 자동으로 길찾기 시작
+                            </a>
+                        </div>
+                        """
+
+            folium.Marker(
+                location=[oil_lot['lat'], oil_lot['lng']],
+                popup=folium.Popup(popup_html, max_width=300),
+                icon=folium.Icon(color='green', icon='tint', prefix='fa')
+            ).add_to(cluster)
+
+    # todo: '주차장' 선택했을 때 map 표시 (parking, 파란색 마커)
+    if option == '주차장':
+        if st.session_state.parking_results and len(st.session_state.parking_results) > 0:
+            # 데이터가 있을 때 첫 번째 검색 결과 위치로 이동
+            center_lat = st.session_state.parking_results[0].lat
+            center_lng = st.session_state.parking_results[0].lng
+            zoom_level = 14
+        else:
+            center_lat, center_lng = 37.5665, 126.9780  # 서울 기본 위치
+            zoom_level = 12
+
+        m = folium.Map(location=[center_lat, center_lng], zoom_start=zoom_level)
+        cluster = MarkerCluster().add_to(m)
+        # 목적지 마커 추가
+        if st.session_state.destination:
+            dest = st.session_state.destination
+            folium.Marker(
+                location=[dest.lat, dest.lng],
+                icon=folium.Icon(color="red", icon="star")
+            ).add_to(m)
+
+        # 주차장 마커 추가
+        for parking_lot in st.session_state.parking_results:
+            # 1. 길찾기를 위한 출발지 정보 (검색창에 입력한 위치)
+            if st.session_state.destination:
+                # 주소 전체보다는 사용자가 검색한 명칭이 가독성이 좋습니다.
+                raw_start_name = st.session_state.destination.name if st.session_state.destination.name else "내 목적지"
+                start_lat = st.session_state.destination.lat
+                start_lon = st.session_state.destination.lng
+            else:
+                raw_start_name = "내 목적지"
+                start_lat, start_lon = center_lat, center_lng
+
+            # 2. 안전한 URL 생성을 위한 인코딩 처리
+            s_name = urllib.parse.quote(raw_start_name)
+            e_name = urllib.parse.quote(parking_lot.name)
+
+            # 카카오맵 길찾기 'dir' 파라미터 구성
+            # sp: 출발지 좌표 및 이름, ep: 목적지 좌표 및 이름
+            kakao_dir_url = (
+                f"https://map.kakao.com/link/from/{s_name},{start_lat},{start_lon}"
+                f"/to/{e_name},{parking_lot.lat},{parking_lot.lng}"
+            )
+
+            popup_html = f"""
+                <div style="width:220px; font-family: 'Nanum Gothic', sans-serif; line-height:1.5;">
+                    <h4 style="margin:0 0 5px 0; color:#333;">{parking_lot.name}</h4>
+                    <div style="font-size:13px; color:#666; margin-bottom:10px;">
+                        <b>📍 주소:</b> {parking_lot.full_addr}<br>
+                        <b>🅿️ 주차면수:</b> <span style="color:#007BFF; font-weight:bold;">{parking_lot.space_no}면</span>
+                    </div>
+                    <a href="{kakao_dir_url}" target="_blank" 
+                       style="display:block; text-align:center; padding:8px; background-color:#FAE100; color:#3C1E1E; text-decoration:none; border-radius:5px; font-size:13px; font-weight:bold;">
+                       🚕 자동으로 길찾기 시작
+                    </a>
+                </div>
+                """
+
+            folium.Marker(
+                location=[parking_lot.lat, parking_lot.lng],
+                popup=folium.Popup(popup_html, max_width=300),
+                icon=folium.Icon(color='blue', icon='info-sign')
+            ).add_to(cluster)
+
+    # todo: '주유소' 선택했을 때 map 표시 (oil, 초록색 마커)
+    if option == '주유소':
+        if st.session_state.parking_results or st.session_state.oil_results:
+            # 데이터가 있을 때 첫 번째 검색 결과 위치로 이동
+            center_lat = st.session_state.parking_results[0].lat
+            center_lng = st.session_state.parking_results[0].lng
+            zoom_level = 14
+        else:
+            center_lat, center_lng = 37.5665, 126.9780  # 서울 기본 위치
+            zoom_level = 12
+
+        m = folium.Map(location=[center_lat, center_lng], zoom_start=zoom_level)
+        cluster = MarkerCluster().add_to(m)
+        # 목적지 마커 추가
+        if st.session_state.destination:
+            dest = st.session_state.destination
+            folium.Marker(
+                location=[dest.lat, dest.lng],
+                icon=folium.Icon(color="red", icon="star")
+            ).add_to(m)
+
+        # 주유소 마커 추가
+        for oil_lot in st.session_state.oil_results:
+            # 출발지 정보: 사용자가 검색한 주소와 좌표
+            # 목적지 정보: 주유소 이름과 좌표
+            start_name = target_location if target_location else "내 검색 위치"
+            start_lat, start_lon = st.session_state['map_center']
+
+            # 카카오맵 길찾기 'dir' 파라미터 구성
+            # sp: 출발지 좌표 및 이름, ep: 목적지 좌표 및 이름
+            kakao_dir_url = (
+                f"https://map.kakao.com/link/from/{start_name},{start_lat},{start_lon}"
+                f"/to/{oil_lot['OS_NM']},{oil_lot['lat']},{oil_lot['lng']}"
+            )
+
+            popup_html = f"""
+                        <div style="width:220px; font-family: 'Nanum Gothic', sans-serif; line-height:1.5;">
+                            <h4 style="margin:0 0 5px 0; color:#333;">{oil_lot['OS_NM']}</h4>
+                            <div style="font-size:13px; color:#666; margin-bottom:10px;">
+                                <b>💰 가격:</b> <span style="color:#ff4b4b; font-weight:bold;">{int(oil_lot['PRICE']):,}원</span><br>
+                                <b>™️ 브랜드:</b> {oil_lot['brand_nm']}<br>
+                                <b>📏 거리:</b> {oil_lot['DISTANCE']}m
+                            </div>
+                            <a href="{kakao_dir_url}" target="_blank" 
+                               style="display:block; text-align:center; padding:8px; background-color:#FAE100; color:#3C1E1E; text-decoration:none; border-radius:5px; font-size:13px; font-weight:bold;">
+                               🚕 자동으로 길찾기 시작
+                            </a>
+                        </div>
+                        """
+
+            folium.Marker(
+                location=[oil_lot['lat'], oil_lot['lng']],
+                popup=folium.Popup(popup_html, max_width=300),
+                icon=folium.Icon(color='green', icon='tint', prefix='fa')
+            ).add_to(cluster)
 
     st_folium(m, width="100%", height=600, key="main_map", returned_objects=[])
 
