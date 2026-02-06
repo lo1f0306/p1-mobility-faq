@@ -6,9 +6,10 @@ entry_p = st.Page("pages/01_entry_page.py", title="홈", icon="🏠", default=Tr
 nearby_parking_p = st.Page("pages/02_nearby_parkinglots.py", title="Parking Mate", icon="🅿️")
 parking_by_region_p = st.Page("pages/03_prototype_category_app.py", title="Parking Lot by region", icon="🅿️")
 search_gas_station_p =  st.Page("pages/04_search_gas_station.py", title="Gas Station Mate", icon="⛽")
+search_parking_gas_p = st.Page("pages/05_search_parking_gas.py", title="Parking and Oil Mate", icon="🔍")
 
 # 내비게이션 실행
-pg = st.navigation({'home':[entry_p], 'parking':[nearby_parking_p, parking_by_region_p], 'Gas Station':[search_gas_station_p]})
+pg = st.navigation({'home':[entry_p], 'parking':[nearby_parking_p, parking_by_region_p], 'Gas Station':[search_gas_station_p], 'search':[search_parking_gas_p]})
 
 # 이전 페이지와 비교
 if "prev_page" not in st.session_state:
