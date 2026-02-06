@@ -128,6 +128,7 @@ project-root/
 
 
 ## ✅수행 결과
+<img width="1892" height="909" alt="image" src="https://github.com/user-attachments/assets/f15e1087-711b-440d-b0ab-f687b1ce1ed4" />
 
 
 ---
