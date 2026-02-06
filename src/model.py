@@ -1,5 +1,5 @@
 class ParkingLot:
-    def __init__(self, id: int ,reg_id: str, name: str, lat: str, lng: str, sido: str, sigungu: str, full_addr: str, space_no: int):
+    def __init__(self, id: int ,reg_id: str, name: str, lat: str, lng: str, sido: str, sigungu: str, full_addr: str, space_no: int, distance: float):
         self.__id = id
         self.__reg_id = reg_id
         self.__name = name
@@ -8,7 +8,8 @@ class ParkingLot:
         self.__sido = sido
         self.__sigungu = sigungu
         self.__full_addr = full_addr
-        self.__space_no = int(space_no)
+        self.__space_no = space_no
+        self.__distance = distance
 
     @property
     def id(self):
@@ -46,8 +47,12 @@ class ParkingLot:
     def space_no(self):
         return self.__space_no
 
+    @property
+    def distance(self):
+        return self.__distance
+
     def __repr__(self):
-        return f'ParkingLot:{self.__id}, {self.__reg_id}, {self.__name}, {self.__lat}, {self.__lng}, {self.__sido}, {self.__sigungu}, {self.__full_addr}'
+        return f'ParkingLot(id = {self.__id}, reg_id = "{self.__reg_id}", name = "{self.__name}", lat = "{self.__lat}", lng = "{self.__lng}", sido = "{self.__sido}", sigungu = {self.__sigungu}, full_addr = {self.__full_addr}, space_no = {self.__space_no}, distance = {self.__distance})'
 
 class Destination:
     def __init__(self, name: str, address: str, lat: float, lng: float):
@@ -73,6 +78,39 @@ class Destination:
     def __repr__(self):
         return f'Destination(name = "{self.__name}", address = "{self.__address}", lat = {self.__lat}, lng = {self.__lng})'
 
+
+# 주유소 API 관련
 class GasStation:
-    def __init__(self, brand_name: str, station_name:str, lat: float, lng: float):
-        pass
+    def __init__(self, reg_id: str, station_name: str, price: int, brand_name: str,  lat: str, lng: str, distance: float):
+        self.__reg_id = reg_id
+        self.__station_name = station_name
+        self.__price = price
+        self.__brand_name = brand_name
+        self.__lat = lat
+        self.__lng = lng
+        self.__distance = distance
+
+        @property
+        def reg_id(self):
+            return self.__reg_id
+        @property
+        def station_name(self):
+            return self.__station_name
+        @property
+        def price(self):
+            return self.__price
+        @property
+        def brand_name(self):
+            return self.__brand_name
+        @property
+        def lat(self):
+            return self.__lat
+        @property
+        def lng(self):
+            return self.__lng
+        @property
+        def distance(self):
+            return self.__distance
+
+        def __repr__(self):
+            return f'GasStation(reg_id = "{self.__reg_id}", station_name = "{self.__station_name}", price = "{self.__price}", brand_name = "{self.__brand_name}", lat = "{self.__lat}", lng = "{self.__lng}", distance = {self.__distance})'
